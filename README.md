@@ -1,6 +1,6 @@
-# Trade Tracker API Specification using Swagger UI
+# TradeTracker API Specification using Swagger UI
 
-API Specification for [Trade Tracker](https://github.com/david-acker/Trade-Tracker).
+API Specification for [TradeTracker](https://github.com/david-acker/Trade-Tracker).
 
 ## Resources
 
