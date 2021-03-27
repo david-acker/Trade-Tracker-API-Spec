@@ -2,7 +2,1929 @@
 openapi: 3.0.1
 info:
   title: TradeTracker API
+  description: API for accessing an---
+openapi: 3.0.1
+info:
+  title: TradeTracker API
   description: API for accessing and managing transactions and positions with TradeTracker.
+  contact:
+    name: David Acker
+    url: https://www.linkedin.com/in/daviddacker/
+    email: davidacker3@gmail.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: '1'
+paths:
+  "/api/Account/authenticate":
+    post:
+      tags:
+      - Account
+      summary: Authenticate an existing account.
+      description: "Sample request: \\\r\nPOST /api/account/authenticate \\\r\n{ \\\r\n
+        \   \"email\": \"yourEmail@yourEmail.com\", \\\r\n    \"password\": \"yourPassword!1\"
+        \\\r\n}"
+      operationId: Authenticate
+      requestBody:
+        description: Authentication request containing account information
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AuthenticationRequest"
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AuthenticationResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - Account
+      summary: Options for /api/account/authenticate URI.
+      description: "Example: \\\r\nOPTIONS /api/account/authenticate"
+      operationId: OptionsForAuthenticate
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/Account/register":
+    post:
+      tags:
+      - Account
+      summary: Register a new account.
+      description: "Example: \\\r\nPOST /api/account/register \\\r\n{ \\\r\n    \"firstName\":
+        \"yourFirstName\", \\\r\n    \"lastName\" : \"yourLastName\", \\\r\n    \"email\":
+        \"yourEmail@yourEmail.com\", \\\r\n    \"userName\": \"yourUserName\", \\\r\n
+        \   \"password\": \"yourPassword!1\" \\\r\n}"
+      operationId: Register
+      requestBody:
+        description: Registration request containing account information
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RegistrationRequest"
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/RegistrationResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - Account
+      summary: Options for /api/account/register URI.
+      description: "Example: \\\r\nOPTIONS /api/account/register"
+      operationId: OptionsForRegister
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/Positions":
+    get:
+      tags:
+      - Positions
+      summary: Get a paged list of positions.
+      description: "Example: \\\r\nGET /api/positions \\\r\n{ \\\r\n    \"orderBy\":
+        \"Quantity\", \\\r\n    \"pageNumber\": \"3\" \\\r\n    \"pageSize\": \"25\",
+        \\\r\n    \"excluding\": [ \\\r\n        \"QRS\", \\\r\n        \"TUV\", \\\r\n
+        \       \"WXY\" \\\r\n    ], \\\r\n    \"Exposure\": \"Long\", \\\r\n}"
+      operationId: GetPositions
+      parameters:
+      - name: AccessKey
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: Order
+        in: query
+        schema:
+          type: string
+      - name: PageNumber
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: Including
+        in: query
+        schema:
+          type: string
+      - name: Excluding
+        in: query
+        schema:
+          type: string
+      - name: Exposure
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns any paged positions matching the parameters
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PagedPositionsWithLinksDto"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/PagedPositionsWithLinksDto"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - Positions
+      summary: Options for /api/positions URI.
+      description: "Example: \\\r\nOPTIONS /api/positions"
+      operationId: OptionsForPositions
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/Positions/{symbol}":
+    get:
+      tags:
+      - Positions
+      summary: Gets a position by symbol of its security.
+      description: "Example: \\\r\nGET /api/positions/{symbol}"
+      operationId: GetPosition
+      parameters:
+      - name: symbol
+        in: path
+        description: The symbol for the position
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns the requested position
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PositionForReturnDto"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - Positions
+      summary: Options for /api/positions/{symbol} URI.
+      description: "Example: \\\r\nOPTIONS /api/positions/{symbol}"
+      operationId: OptionsForPositionBySymbol
+      parameters:
+      - name: symbol
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/TransactionCollections":
+    post:
+      tags:
+      - TransactionCollections
+      summary: Create a collection of transactions.
+      description: "Example: \\\r\nPOST /api/transactioncollections \\\r\n[ \\\r\n
+        \   { \\\r\n        \"dateTime\": \"2019-06-01T12:00:00\", \\\r\n        \"symbol\":
+        \"XYZ\" \\\r\n        \"type\": \"SellToOpen\", \\\r\n        \"quantity\":
+        \"1\", \\\r\n        \"notional\": \"50\", \\\r\n        \"tradePrice\": \"50\"
+        \\\r\n    }, \\\r\n    { \\\r\n        \"dateTime\": \"2019-06-15T12:00:00\",
+        \\\r\n        \"symbol\": \"XYZ\" \\\r\n        \"type\": \"BuyToClose\",
+        \\\r\n        \"quantity\": \"1\", \\\r\n        \"notional\": \"40\", \\\r\n
+        \       \"tradePrice\": \"40\" \\\r\n    }, \\\r\n]"
+      operationId: CreateTransactionCollection
+      requestBody:
+        description: The transactions to be created
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/TransactionForCreationDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/TransactionForReturnDto"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - TransactionCollections
+      summary: Options for /api/transactioncollections URI.
+      description: "Example: \\\r\nOPTIONS /api/transactioncollections"
+      operationId: OptionsForTransactionCollections
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/TransactionCollections/{transactionIds}":
+    get:
+      tags:
+      - TransactionCollections
+      summary: Get a collection of transactions.
+      description: "Example: \\\r\nGET /api/transactioncollections/{firstTransactionId},{secondTransactionId}"
+      operationId: GetTransactionCollection
+      parameters:
+      - name: transactionIds
+        in: path
+        description: The ids for the transactions
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Returns the requested transactions
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - TransactionCollections
+      summary: Options for /api/transactioncollections/{transactionIds} URI.
+      description: "Example: \\\r\nOPTIONS /api/transactioncollections/{firstTransactionId},{secondTransactionId}"
+      operationId: OptionsForTransactionCollectionByTransactionIds
+      parameters:
+      - name: transactionIds
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/Transactions":
+    get:
+      tags:
+      - Transactions
+      summary: Get a paged list of transactions.
+      description: "Sample request: \\\r\nGET /api/transactions \\\r\n{ \\\r\n    \"orderBy\":
+        \"DateTime\", \\\r\n    \"pageNumber\": \"2\" \\\r\n    \"pageSize\": \"50\",
+        \\\r\n    \"including\": [ \\\r\n        \"ABC\", \\\r\n        \"XYZ\", \\\r\n
+        \       \"MNO\" \\\r\n    ], \\\r\n    \"rangeStart\": \"2020-06-01T00:00:00\",
+        \\\r\n    \"rangeEnd\": \"2021-01-01T00:00:00\" \\\r\n}"
+      operationId: GetPagedTransactions
+      parameters:
+      - name: Order
+        in: query
+        schema:
+          type: string
+      - name: Type
+        in: query
+        schema:
+          type: string
+      - name: PageNumber
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: Selection
+        in: query
+        schema:
+          type: string
+      - name: RangeStart
+        in: query
+        schema:
+          type: string
+      - name: RangeEnd
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns any paged transactions matching parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/TransactionForReturnDto"
+            application/vnd.trade.hateoas+json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/TransactionForReturnDto"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    post:
+      tags:
+      - Transactions
+      summary: Create a transaction.
+      description: "Example: \\\r\nPOST /api/transactions \\\r\n{ \\\r\n    \"dateTime\":
+        \"2020-01-01T12:30:15\", \\\r\n    \"symbol\": \"ABC\" \\\r\n    \"type\":
+        \"BuyToOpen\", \\\r\n    \"quantity\": \"2.5\", \\\r\n    \"notional\": \"13.75\",
+        \\\r\n    \"tradePrice\": \"5.50\" \\\r\n}"
+      operationId: CreateTransaction
+      requestBody:
+        description: The transaction to be created
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateTransactionCommandDto"
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - Transactions
+      summary: Options for /api/transactions URI.
+      description: "Example: \\\r\nOPTIONS /api/transactions"
+      operationId: OptionsForTransactions
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/Transactions/{transactionId}":
+    get:
+      tags:
+      - Transactions
+      summary: Get a transaction by its id.
+      description: "Example: \\\r\nGET /api/transactions/{transactionId}"
+      operationId: GetTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        description: The id of the transaction
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Returns the requested transaction
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TransactionForReturnDto"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    put:
+      tags:
+      - Transactions
+      summary: Update a transaction.
+      description: "Example: \\\r\nPUT /api/transactions/{transactionId} \\\r\n{ \\\r\n
+        \   \"dateTime\": \"2020-01-15T15:00:00\", \\\r\n    \"symbol\": \"CBA\" \\\r\n
+        \   \"type\": \"SellToClose\", \\\r\n    \"quantity\": \"1.0\", \\\r\n    \"notional\":
+        \"12.50\", \\\r\n    \"tradePrice\": \"12.50\" \\\r\n}"
+      operationId: UpdateTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        description: The id for the transaction to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: The transaction with updated values
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateTransactionCommandDto"
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    patch:
+      tags:
+      - Transactions
+      summary: Partially update a transaction.
+      operationId: PatchTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        description: The id for the transaction to be updated
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: The set of operations to be applied to the transaction
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateTransactionCommandDtoJsonPatchDocument"
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '422':
+          description: Validation Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    delete:
+      tags:
+      - Transactions
+      summary: Delete a transaction.
+      description: "Example: \\\r\nDELETE /api/transactions/{transactionId}"
+      operationId: DeleteTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        description: The id for the transaction to be deleted
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - Transactions
+      summary: Options for /api/transactions/{transactionId} URI.
+      description: "Example: \\\r\nOPTIONS /api/transactions/{transactionId}"
+      operationId: OptionsForTransactionById
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+  "/api/Transactions/export":
+    get:
+      tags:
+      - Transactions
+      summary: Get all transactions as a CSV file.
+      description: "Example \\\r\nGET /api/transactions/export"
+      operationId: ExportTransactions
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+    options:
+      tags:
+      - Transactions
+      summary: Options for /api/transactions/export URI.
+      description: "Example: \\\r\nOPTIONS /api/transactions/export"
+      operationId: OptionsForExportTransactions
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '429':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+        '500':
+          description: Server Error
+        default:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+components:
+  schemas:
+    AuthenticationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AuthenticationResponse:
+      type: object
+      properties:
+        userName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        token:
+          type: string
+          nullable: true
+        expiration:
+          type: string
+          format: date-time
+      additionalProperties: false
+    CreateTransactionCommandDto:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        symbol:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        quantity:
+          type: number
+          format: double
+        notional:
+          type: number
+          format: double
+        tradePrice:
+          type: number
+          format: double
+      additionalProperties: false
+    IContractResolver:
+      type: object
+      additionalProperties: false
+    LinkDto:
+      type: object
+      properties:
+        href:
+          type: string
+          nullable: true
+          readOnly: true
+        rel:
+          type: string
+          nullable: true
+          readOnly: true
+        method:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    OperationType:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      format: int32
+    PagedPositionsWithLinksDto:
+      type: object
+      properties:
+        metadata:
+          "$ref": "#/components/schemas/PaginationMetadata"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PositionForReturnWithLinksDto"
+          nullable: true
+        links:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LinkDto"
+          nullable: true
+      additionalProperties: false
+    PaginationMetadata:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        pageCount:
+          type: integer
+          format: int32
+        totalRecordCount:
+          type: integer
+          format: int32
+      additionalProperties: false
+    PositionForReturnDto:
+      type: object
+      properties:
+        symbol:
+          type: string
+          nullable: true
+        exposure:
+          type: string
+          nullable: true
+        quantity:
+          type: number
+          format: double
+        averageCostBasis:
+          type: number
+          format: double
+      additionalProperties: false
+    PositionForReturnWithLinksDto:
+      type: object
+      properties:
+        symbol:
+          type: string
+          nullable: true
+        exposure:
+          type: string
+          nullable: true
+        quantity:
+          type: number
+          format: double
+        averageCostBasis:
+          type: number
+          format: double
+        links:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LinkDto"
+          nullable: true
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: {}
+    RegistrationRequest:
+      required:
+      - email
+      - firstName
+      - lastName
+      - password
+      - userName
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        userName:
+          minLength: 6
+          type: string
+        password:
+          minLength: 6
+          type: string
+      additionalProperties: false
+    RegistrationResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TransactionForCreationDto:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        symbol:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        quantity:
+          type: number
+          format: double
+        notional:
+          type: number
+          format: double
+        tradePrice:
+          type: number
+          format: double
+      additionalProperties: false
+    TransactionForReturnDto:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          format: uuid
+        dateTime:
+          type: string
+          format: date-time
+        symbol:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        quantity:
+          type: number
+          format: double
+        notional:
+          type: number
+          format: double
+        tradePrice:
+          type: number
+          format: double
+      additionalProperties: false
+    UpdateTransactionCommandDto:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        symbol:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        quantity:
+          type: number
+          format: double
+        notional:
+          type: number
+          format: double
+        tradePrice:
+          type: number
+          format: double
+      additionalProperties: false
+    UpdateTransactionCommandDtoJsonPatchDocument:
+      type: object
+      properties:
+        operations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/UpdateTransactionCommandDtoOperation"
+          nullable: true
+          readOnly: true
+        contractResolver:
+          "$ref": "#/components/schemas/IContractResolver"
+      additionalProperties: false
+    UpdateTransactionCommandDtoOperation:
+      type: object
+      properties:
+        operationType:
+          "$ref": "#/components/schemas/OperationType"
+        path:
+          type: string
+          nullable: true
+        op:
+          type: string
+          nullable: true
+        from:
+          type: string
+          nullable: true
+        value:
+          nullable: true
+      additionalProperties: false
+d managing transactions and positions with TradeTracker.
   contact:
     name: David Acker
     url: https://www.linkedin.com/in/daviddacker/
