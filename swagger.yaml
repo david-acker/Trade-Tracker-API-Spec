@@ -202,12 +202,7 @@ paths:
         \       \"WXY\" \\\r\n    ], \\\r\n    \"Exposure\": \"Long\", \\\r\n}"
       operationId: GetPositions
       parameters:
-      - name: AccessKey
-        in: query
-        schema:
-          type: string
-          format: uuid
-      - name: Order
+      - name: OrderBy
         in: query
         schema:
           type: string
@@ -221,15 +216,11 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: Including
+      - name: SymbolSelection
         in: query
         schema:
           type: string
-      - name: Excluding
-        in: query
-        schema:
-          type: string
-      - name: Exposure
+      - name: ExposureType
         in: query
         schema:
           type: string
@@ -237,55 +228,37 @@ paths:
         '200':
           description: Returns any paged positions matching the parameters
           content:
-            application/json:
+            application/vnd.trade.pagedpositions.hateoas+json:
               schema:
-                "$ref": "#/components/schemas/PagedPositionsWithLinksDto"
-            application/vnd.trade.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/PagedPositionsWithLinksDto"
+                "$ref": "#/components/schemas/PagedPositionsWithLinks"
         '400':
           description: Bad Request
           content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedpositions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
           description: Unauthorized
           content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedpositions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
           description: Not Acceptable
           content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedpositions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '422':
           description: Validation Error
           content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedpositions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedpositions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -293,10 +266,7 @@ paths:
         default:
           description: Error
           content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedpositions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
     options:
@@ -390,11 +360,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/PositionForReturnDto"
+                "$ref": "#/components/schemas/PositionForReturn"
+            application/vnd.trade.position+json:
+              schema:
+                "$ref": "#/components/schemas/PositionForReturn"
         '400':
           description: Bad Request
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -403,10 +379,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '404':
           description: Not Found
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
@@ -415,10 +397,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '422':
           description: Validation Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '429':
@@ -427,12 +415,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '500':
           description: Server Error
         default:
           description: Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
     options:
@@ -531,9 +525,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                "$ref": "#/components/schemas/TransactionForCreationDto"
+              "$ref": "#/components/schemas/CreateTransactionCollectionCommand"
       responses:
         '201':
           description: Success
@@ -542,11 +534,19 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/TransactionForReturnDto"
+                  "$ref": "#/components/schemas/TransactionForReturn"
+            application/vnd.trade.transactioncollection+json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/TransactionForReturn"
         '400':
           description: Bad Request
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -555,10 +555,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '406':
           description: Not Acceptable
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '422':
@@ -567,10 +573,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -579,6 +591,9 @@ paths:
           description: Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
     options:
@@ -652,15 +667,15 @@ paths:
             application/vnd.trade.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-  "/api/TransactionCollections/{transactionIds}":
+  "/api/TransactionCollections/{ids}":
     get:
       tags:
       - TransactionCollections
       summary: Get a collection of transactions.
-      description: "Example: \\\r\nGET /api/transactioncollections/{firstTransactionId},{secondTransactionId}"
+      description: "Example: \\\r\nGET /api/transactioncollections/{firstId},{secondId}"
       operationId: GetTransactionCollection
       parameters:
-      - name: transactionIds
+      - name: ids
         in: path
         description: The ids for the transactions
         required: true
@@ -678,10 +693,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '401':
           description: Unauthorized
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '404':
@@ -690,10 +711,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '406':
           description: Not Acceptable
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '422':
@@ -702,10 +729,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -716,14 +749,17 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
     options:
       tags:
       - TransactionCollections
       summary: Options for /api/transactioncollections/{transactionIds} URI.
-      description: "Example: \\\r\nOPTIONS /api/transactioncollections/{firstTransactionId},{secondTransactionId}"
-      operationId: OptionsForTransactionCollectionByTransactionIds
+      description: "Example: \\\r\nOPTIONS /api/transactioncollections/{firstId},{secondId}"
+      operationId: OptionsForTransactionCollectionByIds
       parameters:
-      - name: transactionIds
+      - name: ids
         in: path
         required: true
         schema:
@@ -805,11 +841,11 @@ paths:
         \\\r\n    \"rangeEnd\": \"2021-01-01T00:00:00\" \\\r\n}"
       operationId: GetPagedTransactions
       parameters:
-      - name: Order
+      - name: OrderBy
         in: query
         schema:
           type: string
-      - name: Type
+      - name: TransactionType
         in: query
         schema:
           type: string
@@ -823,7 +859,7 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: Selection
+      - name: SymbolSelection
         in: query
         schema:
           type: string
@@ -843,19 +879,19 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/TransactionForReturnDto"
-            application/vnd.trade.hateoas+json:
+                  "$ref": "#/components/schemas/TransactionForReturn"
+            application/vnd.trade.pagedtransactions+json:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/TransactionForReturnDto"
+                  "$ref": "#/components/schemas/TransactionForReturn"
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -864,7 +900,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
@@ -873,7 +909,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '422':
@@ -882,7 +918,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '429':
@@ -891,7 +927,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -902,7 +938,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-            application/vnd.trade.hateoas+json:
+            application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
     post:
@@ -919,7 +955,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CreateTransactionCommandDto"
+              "$ref": "#/components/schemas/CreateTransactionCommand"
       responses:
         '201':
           description: Success
@@ -929,10 +965,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '401':
           description: Unauthorized
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
@@ -941,10 +983,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '422':
           description: Validation Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '429':
@@ -953,12 +1001,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '500':
           description: Server Error
         default:
           description: Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
     options:
@@ -1032,15 +1086,15 @@ paths:
             application/vnd.trade.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
-  "/api/Transactions/{transactionId}":
+  "/api/Transactions/{id}":
     get:
       tags:
       - Transactions
       summary: Get a transaction by its id.
-      description: "Example: \\\r\nGET /api/transactions/{transactionId}"
+      description: "Example: \\\r\nGET /api/transactions/{id}"
       operationId: GetTransaction
       parameters:
-      - name: transactionId
+      - name: id
         in: path
         description: The id of the transaction
         required: true
@@ -1053,11 +1107,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/TransactionForReturnDto"
+                "$ref": "#/components/schemas/TransactionForReturn"
+            application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/TransactionForReturn"
         '400':
           description: Bad Request
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -1066,10 +1126,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '404':
           description: Not Found
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
@@ -1078,10 +1144,16 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
             application/json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -1092,17 +1164,20 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
     put:
       tags:
       - Transactions
       summary: Update a transaction.
-      description: "Example: \\\r\nPUT /api/transactions/{transactionId} \\\r\n{ \\\r\n
-        \   \"dateTime\": \"2020-01-15T15:00:00\", \\\r\n    \"symbol\": \"CBA\" \\\r\n
-        \   \"type\": \"SellToClose\", \\\r\n    \"quantity\": \"1.0\", \\\r\n    \"notional\":
+      description: "Example: \\\r\nPUT /api/transactions/{id} \\\r\n{ \\\r\n    \"dateTime\":
+        \"2020-01-15T15:00:00\", \\\r\n    \"symbol\": \"CBA\" \\\r\n    \"type\":
+        \"SellToClose\", \\\r\n    \"quantity\": \"1.0\", \\\r\n    \"notional\":
         \"12.50\", \\\r\n    \"tradePrice\": \"12.50\" \\\r\n}"
       operationId: UpdateTransaction
       parameters:
-      - name: transactionId
+      - name: id
         in: path
         description: The id for the transaction to be updated
         required: true
@@ -1114,7 +1189,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/UpdateTransactionCommandDto"
+              "$ref": "#/components/schemas/UpdateTransactionCommand"
       responses:
         '204':
           description: Success
@@ -1210,7 +1285,7 @@ paths:
       summary: Partially update a transaction.
       operationId: PatchTransaction
       parameters:
-      - name: transactionId
+      - name: id
         in: path
         description: The id for the transaction to be updated
         required: true
@@ -1222,7 +1297,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/UpdateTransactionCommandDtoJsonPatchDocument"
+              "$ref": "#/components/schemas/UpdateTransactionCommandBaseJsonPatchDocument"
       responses:
         '204':
           description: Success
@@ -1316,10 +1391,10 @@ paths:
       tags:
       - Transactions
       summary: Delete a transaction.
-      description: "Example: \\\r\nDELETE /api/transactions/{transactionId}"
+      description: "Example: \\\r\nDELETE /api/transactions/{id}"
       operationId: DeleteTransaction
       parameters:
-      - name: transactionId
+      - name: id
         in: path
         description: The id for the transaction to be deleted
         required: true
@@ -1406,11 +1481,11 @@ paths:
     options:
       tags:
       - Transactions
-      summary: Options for /api/transactions/{transactionId} URI.
-      description: "Example: \\\r\nOPTIONS /api/transactions/{transactionId}"
+      summary: Options for /api/transactions/{id} URI.
+      description: "Example: \\\r\nOPTIONS /api/transactions/{id}"
       operationId: OptionsForTransactionById
       parameters:
-      - name: transactionId
+      - name: id
         in: path
         required: true
         schema:
@@ -1651,7 +1726,38 @@ components:
           type: string
           format: date-time
       additionalProperties: false
-    CreateTransactionCommandDto:
+    CreateTransactionCollectionCommand:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CreateTransactionCommandBase"
+          nullable: true
+      additionalProperties: false
+    CreateTransactionCommand:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        symbol:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        quantity:
+          type: number
+          format: double
+        notional:
+          type: number
+          format: double
+        tradePrice:
+          type: number
+          format: double
+      additionalProperties: false
+    CreateTransactionCommandBase:
       type: object
       properties:
         dateTime:
@@ -1676,7 +1782,7 @@ components:
     IContractResolver:
       type: object
       additionalProperties: false
-    LinkDto:
+    Link:
       type: object
       properties:
         href:
@@ -1703,7 +1809,7 @@ components:
       - 6
       type: integer
       format: int32
-    PagedPositionsWithLinksDto:
+    PagedPositionsWithLinks:
       type: object
       properties:
         metadata:
@@ -1711,12 +1817,12 @@ components:
         items:
           type: array
           items:
-            "$ref": "#/components/schemas/PositionForReturnWithLinksDto"
+            "$ref": "#/components/schemas/PositionForReturnWithLinks"
           nullable: true
         links:
           type: array
           items:
-            "$ref": "#/components/schemas/LinkDto"
+            "$ref": "#/components/schemas/Link"
           nullable: true
       additionalProperties: false
     PaginationMetadata:
@@ -1735,7 +1841,7 @@ components:
           type: integer
           format: int32
       additionalProperties: false
-    PositionForReturnDto:
+    PositionForReturn:
       type: object
       properties:
         symbol:
@@ -1750,8 +1856,13 @@ components:
         averageCostBasis:
           type: number
           format: double
+        sourceRelations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SourceRelation"
+          nullable: true
       additionalProperties: false
-    PositionForReturnWithLinksDto:
+    PositionForReturnWithLinks:
       type: object
       properties:
         symbol:
@@ -1766,10 +1877,15 @@ components:
         averageCostBasis:
           type: number
           format: double
+        sourceRelations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SourceRelation"
+          nullable: true
         links:
           type: array
           items:
-            "$ref": "#/components/schemas/LinkDto"
+            "$ref": "#/components/schemas/Link"
           nullable: true
       additionalProperties: false
     ProblemDetails:
@@ -1822,32 +1938,26 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    TransactionForCreationDto:
-      type: object
-      properties:
-        dateTime:
-          type: string
-          format: date-time
-        symbol:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        quantity:
-          type: number
-          format: double
-        notional:
-          type: number
-          format: double
-        tradePrice:
-          type: number
-          format: double
-      additionalProperties: false
-    TransactionForReturnDto:
+    SourceRelation:
       type: object
       properties:
         transactionId:
+          type: string
+          format: uuid
+        dateTime:
+          type: string
+          format: date-time
+        tradePrice:
+          type: number
+          format: double
+        quantity:
+          type: number
+          format: double
+      additionalProperties: false
+    TransactionForReturn:
+      type: object
+      properties:
+        id:
           type: string
           format: uuid
         dateTime:
@@ -1869,7 +1979,7 @@ components:
           type: number
           format: double
       additionalProperties: false
-    UpdateTransactionCommandDto:
+    UpdateTransactionCommand:
       type: object
       properties:
         dateTime:
@@ -1890,20 +2000,23 @@ components:
         tradePrice:
           type: number
           format: double
+        id:
+          type: string
+          format: uuid
       additionalProperties: false
-    UpdateTransactionCommandDtoJsonPatchDocument:
+    UpdateTransactionCommandBaseJsonPatchDocument:
       type: object
       properties:
         operations:
           type: array
           items:
-            "$ref": "#/components/schemas/UpdateTransactionCommandDtoOperation"
+            "$ref": "#/components/schemas/UpdateTransactionCommandBaseOperation"
           nullable: true
           readOnly: true
         contractResolver:
           "$ref": "#/components/schemas/IContractResolver"
       additionalProperties: false
-    UpdateTransactionCommandDtoOperation:
+    UpdateTransactionCommandBaseOperation:
       type: object
       properties:
         operationType:
