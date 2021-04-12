@@ -17,9 +17,9 @@ paths:
       tags:
       - Account
       summary: Authenticate an existing account.
-      description: "Sample request: \\\r\nPOST /api/account/authenticate \\\r\n{ \\\r\n
-        \   \"email\": \"yourEmail@yourEmail.com\", \\\r\n    \"password\": \"yourPassword!1\"
-        \\\r\n}"
+      description: "Example:\r\n            \r\n    POST /api/account/authenticate
+        \r\n    { \r\n        \"email\": \"yourEmail@yourEmail.com\", \r\n        \"password\":
+        \"yourPassword!1\" \r\n    }"
       operationId: Authenticate
       requestBody:
         description: Authentication request containing account information
@@ -70,7 +70,7 @@ paths:
       tags:
       - Account
       summary: Options for /api/account/authenticate URI.
-      description: "Example: \\\r\nOPTIONS /api/account/authenticate"
+      description: "Example:\r\n            \r\n    OPTIONS /api/account/authenticate"
       operationId: OptionsForAuthenticate
       responses:
         '204':
@@ -106,10 +106,11 @@ paths:
       tags:
       - Account
       summary: Register a new account.
-      description: "Example: \\\r\nPOST /api/account/register \\\r\n{ \\\r\n    \"firstName\":
-        \"yourFirstName\", \\\r\n    \"lastName\" : \"yourLastName\", \\\r\n    \"email\":
-        \"yourEmail@yourEmail.com\", \\\r\n    \"userName\": \"yourUserName\", \\\r\n
-        \   \"password\": \"yourPassword!1\" \\\r\n}"
+      description: "Example:\r\n            \r\n    POST /api/account/register \r\n
+        \   { \r\n       \"firstName\": \"yourFirstName\", \r\n       \"lastName\"
+        : \"yourLastName\", \r\n       \"email\": \"yourEmail@yourEmail.com\", \r\n
+        \      \"userName\": \"yourUserName\", \r\n       \"password\": \"yourPassword!1\"
+        \r\n    }"
       operationId: Register
       requestBody:
         description: Registration request containing account information
@@ -160,7 +161,7 @@ paths:
       tags:
       - Account
       summary: Options for /api/account/register URI.
-      description: "Example: \\\r\nOPTIONS /api/account/register"
+      description: "Example:\r\n            \r\n    OPTIONS /api/account/register"
       operationId: OptionsForRegister
       responses:
         '204':
@@ -192,88 +193,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
   "/api/Positions":
-    get:
-      tags:
-      - Positions
-      summary: Get a paged list of positions.
-      description: "Example: \\\r\nGET /api/positions \\\r\n{ \\\r\n    \"orderBy\":
-        \"Quantity\", \\\r\n    \"pageNumber\": \"3\" \\\r\n    \"pageSize\": \"25\",
-        \\\r\n    \"excluding\": [ \\\r\n        \"QRS\", \\\r\n        \"TUV\", \\\r\n
-        \       \"WXY\" \\\r\n    ], \\\r\n    \"Exposure\": \"Long\", \\\r\n}"
-      operationId: GetPositions
-      parameters:
-      - name: OrderBy
-        in: query
-        schema:
-          type: string
-      - name: PageNumber
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: PageSize
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: SymbolSelection
-        in: query
-        schema:
-          type: string
-      - name: ExposureType
-        in: query
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Returns any paged positions matching the parameters
-          content:
-            application/vnd.trade.pagedpositions.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/PagedPositionsWithLinks"
-        '400':
-          description: Bad Request
-          content:
-            application/vnd.trade.pagedpositions.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-        '401':
-          description: Unauthorized
-          content:
-            application/vnd.trade.pagedpositions.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-        '406':
-          description: Not Acceptable
-          content:
-            application/vnd.trade.pagedpositions.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-        '422':
-          description: Validation Error
-          content:
-            application/vnd.trade.pagedpositions.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-        '429':
-          description: Client Error
-          content:
-            application/vnd.trade.pagedpositions.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
-        '500':
-          description: Server Error
-        default:
-          description: Error
-          content:
-            application/vnd.trade.pagedpositions.hateoas+json:
-              schema:
-                "$ref": "#/components/schemas/ProblemDetails"
     options:
       tags:
       - Positions
       summary: Options for /api/positions URI.
-      description: "Example: \\\r\nOPTIONS /api/positions"
+      description: "Example:\r\n            \r\n    OPTIONS /api/positions"
       operationId: OptionsForPositions
       responses:
         '204':
@@ -345,7 +269,7 @@ paths:
       tags:
       - Positions
       summary: Gets a position by symbol of its security.
-      description: "Example: \\\r\nGET /api/positions/{symbol}"
+      description: "Example:\r\n            \r\n    GET /api/positions/{symbol}"
       operationId: GetPosition
       parameters:
       - name: symbol
@@ -354,16 +278,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: Accept
+        in: header
+        description: The request media type specified in the Accept header.
+        schema:
+          type: string
       responses:
         '200':
           description: Returns the requested position
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/PositionForReturn"
-            application/vnd.trade.position+json:
-              schema:
-                "$ref": "#/components/schemas/PositionForReturn"
         '400':
           description: Bad Request
           content:
@@ -371,6 +293,12 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.position+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.detailedposition.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -382,6 +310,12 @@ paths:
             application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.detailedposition.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '404':
           description: Not Found
           content:
@@ -389,6 +323,12 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.position+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.detailedposition.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
@@ -400,6 +340,12 @@ paths:
             application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.detailedposition.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '422':
           description: Validation Error
           content:
@@ -409,6 +355,12 @@ paths:
             application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.detailedposition.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
@@ -416,6 +368,12 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.position+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.detailedposition.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -429,11 +387,17 @@ paths:
             application/vnd.trade.position+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.position.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.detailedposition.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
     options:
       tags:
       - Positions
       summary: Options for /api/positions/{symbol} URI.
-      description: "Example: \\\r\nOPTIONS /api/positions/{symbol}"
+      description: "Example:\r\n            \r\n    OPTIONS /api/positions/{symbol}"
       operationId: OptionsForPositionBySymbol
       parameters:
       - name: symbol
@@ -511,15 +475,21 @@ paths:
       tags:
       - TransactionCollections
       summary: Create a collection of transactions.
-      description: "Example: \\\r\nPOST /api/transactioncollections \\\r\n[ \\\r\n
-        \   { \\\r\n        \"dateTime\": \"2019-06-01T12:00:00\", \\\r\n        \"symbol\":
-        \"XYZ\" \\\r\n        \"type\": \"SellToOpen\", \\\r\n        \"quantity\":
-        \"1\", \\\r\n        \"notional\": \"50\", \\\r\n        \"tradePrice\": \"50\"
-        \\\r\n    }, \\\r\n    { \\\r\n        \"dateTime\": \"2019-06-15T12:00:00\",
-        \\\r\n        \"symbol\": \"XYZ\" \\\r\n        \"type\": \"BuyToClose\",
-        \\\r\n        \"quantity\": \"1\", \\\r\n        \"notional\": \"40\", \\\r\n
-        \       \"tradePrice\": \"40\" \\\r\n    }, \\\r\n]"
+      description: "Example:\r\n            \r\n    POST /api/transactioncollections
+        \r\n    [ \r\n        { \r\n            \"dateTime\": \"2019-06-01T12:00:00\",
+        \r\n            \"symbol\": \"XYZ\" \r\n            \"type\": \"SellToOpen\",
+        \r\n            \"quantity\": \"1\", \r\n            \"notional\": \"50\",
+        \r\n            \"tradePrice\": \"50\" \r\n        }, \r\n        { \r\n            \"dateTime\":
+        \"2019-06-15T12:00:00\", \r\n            \"symbol\": \"XYZ\" \r\n            \"type\":
+        \"BuyToClose\", \r\n            \"quantity\": \"1\", \r\n            \"notional\":
+        \"40\", \r\n            \"tradePrice\": \"40\" \r\n        }, \r\n    ]"
       operationId: CreateTransactionCollection
+      parameters:
+      - name: Accept
+        in: header
+        description: The request media type specified in the Accept header.
+        schema:
+          type: string
       requestBody:
         description: The transactions to be created
         content:
@@ -529,17 +499,6 @@ paths:
       responses:
         '201':
           description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/TransactionForReturn"
-            application/vnd.trade.transactioncollection+json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/TransactionForReturn"
         '400':
           description: Bad Request
           content:
@@ -547,6 +506,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -558,6 +520,9 @@ paths:
             application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '406':
           description: Not Acceptable
           content:
@@ -565,6 +530,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '422':
@@ -576,6 +544,9 @@ paths:
             application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
@@ -583,6 +554,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transactioncollection+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -596,11 +570,14 @@ paths:
             application/vnd.trade.transactioncollection+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transactioncollection.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
     options:
       tags:
       - TransactionCollections
       summary: Options for /api/transactioncollections URI.
-      description: "Example: \\\r\nOPTIONS /api/transactioncollections"
+      description: "Example:\r\n            \r\n    OPTIONS /api/transactioncollections"
       operationId: OptionsForTransactionCollections
       responses:
         '204':
@@ -672,7 +649,7 @@ paths:
       tags:
       - TransactionCollections
       summary: Get a collection of transactions.
-      description: "Example: \\\r\nGET /api/transactioncollections/{firstId},{secondId}"
+      description: "Example:\r\n            \r\n    GET /api/transactioncollections/{firstId},{secondId}"
       operationId: GetTransactionCollection
       parameters:
       - name: ids
@@ -684,6 +661,11 @@ paths:
           items:
             type: string
             format: uuid
+      - name: Accept
+        in: header
+        description: The request media type specified in the Accept header.
+        schema:
+          type: string
       responses:
         '200':
           description: Returns the requested transactions
@@ -756,7 +738,7 @@ paths:
       tags:
       - TransactionCollections
       summary: Options for /api/transactioncollections/{transactionIds} URI.
-      description: "Example: \\\r\nOPTIONS /api/transactioncollections/{firstId},{secondId}"
+      description: "Example:\r\n            \r\n    OPTIONS /api/transactioncollections/{firstId},{secondId}"
       operationId: OptionsForTransactionCollectionByIds
       parameters:
       - name: ids
@@ -834,11 +816,12 @@ paths:
       tags:
       - Transactions
       summary: Get a paged list of transactions.
-      description: "Sample request: \\\r\nGET /api/transactions \\\r\n{ \\\r\n    \"orderBy\":
-        \"DateTime\", \\\r\n    \"pageNumber\": \"2\" \\\r\n    \"pageSize\": \"50\",
-        \\\r\n    \"including\": [ \\\r\n        \"ABC\", \\\r\n        \"XYZ\", \\\r\n
-        \       \"MNO\" \\\r\n    ], \\\r\n    \"rangeStart\": \"2020-06-01T00:00:00\",
-        \\\r\n    \"rangeEnd\": \"2021-01-01T00:00:00\" \\\r\n}"
+      description: "Example:\r\n            \r\n    GET /api/transactions\r\n    {
+        \r\n        \"orderBy\": \"DateTime\", \r\n        \"pageNumber\": \"2\" \r\n
+        \       \"pageSize\": \"50\", \r\n        \"including\": [ \r\n            \"ABC\",
+        \r\n            \"XYZ\", \r\n            \"MNO\" \r\n        ], \r\n        \"rangeStart\":
+        \"2020-06-01T00:00:00\", \r\n        \"rangeEnd\": \"2021-01-01T00:00:00\"
+        \r\n    }"
       operationId: GetPagedTransactions
       parameters:
       - name: OrderBy
@@ -871,20 +854,14 @@ paths:
         in: query
         schema:
           type: string
+      - name: Accept
+        in: header
+        description: The request media type specified in the Accept header.
+        schema:
+          type: string
       responses:
         '200':
           description: Returns any paged transactions matching parameters
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/TransactionForReturn"
-            application/vnd.trade.pagedtransactions+json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/TransactionForReturn"
         '400':
           description: Bad Request
           content:
@@ -892,6 +869,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.pagedtransactions+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.pagedtransactions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -903,6 +883,9 @@ paths:
             application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.pagedtransactions.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '406':
           description: Not Acceptable
           content:
@@ -910,6 +893,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.pagedtransactions+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.pagedtransactions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '422':
@@ -921,6 +907,9 @@ paths:
             application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.pagedtransactions.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
@@ -928,6 +917,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.pagedtransactions+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.pagedtransactions.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -941,15 +933,25 @@ paths:
             application/vnd.trade.pagedtransactions+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.pagedtransactions.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
     post:
       tags:
       - Transactions
       summary: Create a transaction.
-      description: "Example: \\\r\nPOST /api/transactions \\\r\n{ \\\r\n    \"dateTime\":
-        \"2020-01-01T12:30:15\", \\\r\n    \"symbol\": \"ABC\" \\\r\n    \"type\":
-        \"BuyToOpen\", \\\r\n    \"quantity\": \"2.5\", \\\r\n    \"notional\": \"13.75\",
-        \\\r\n    \"tradePrice\": \"5.50\" \\\r\n}"
+      description: "Example:\r\n            \r\n    POST /api/transactions \r\n    {
+        \r\n        \"dateTime\": \"2020-01-01T12:30:15\", \r\n        \"symbol\":
+        \"ABC\" \r\n        \"type\": \"BuyToOpen\", \r\n        \"quantity\": \"2.5\",
+        \r\n        \"notional\": \"13.75\", \r\n        \"tradePrice\": \"5.50\"
+        \r\n    }"
       operationId: CreateTransaction
+      parameters:
+      - name: Accept
+        in: header
+        description: The request media type specified in the Accept header.
+        schema:
+          type: string
       requestBody:
         description: The transaction to be created
         content:
@@ -968,6 +970,9 @@ paths:
             application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '401':
           description: Unauthorized
           content:
@@ -975,6 +980,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
@@ -986,6 +994,9 @@ paths:
             application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '422':
           description: Validation Error
           content:
@@ -995,6 +1006,9 @@ paths:
             application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
@@ -1002,6 +1016,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -1015,11 +1032,14 @@ paths:
             application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
     options:
       tags:
       - Transactions
       summary: Options for /api/transactions URI.
-      description: "Example: \\\r\nOPTIONS /api/transactions"
+      description: "Example:\r\n            \r\n    OPTIONS /api/transactions"
       operationId: OptionsForTransactions
       responses:
         '204':
@@ -1091,7 +1111,7 @@ paths:
       tags:
       - Transactions
       summary: Get a transaction by its id.
-      description: "Example: \\\r\nGET /api/transactions/{id}"
+      description: "Example:\r\n\r\n    GET /api/transactions/{id}"
       operationId: GetTransaction
       parameters:
       - name: id
@@ -1101,16 +1121,14 @@ paths:
         schema:
           type: string
           format: uuid
+      - name: Accept
+        in: header
+        description: The request media type specified in the Accept header.
+        schema:
+          type: string
       responses:
         '200':
           description: Returns the requested transaction
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/TransactionForReturn"
-            application/vnd.trade.transaction+json:
-              schema:
-                "$ref": "#/components/schemas/TransactionForReturn"
         '400':
           description: Bad Request
           content:
@@ -1118,6 +1136,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '401':
@@ -1129,6 +1150,9 @@ paths:
             application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '404':
           description: Not Found
           content:
@@ -1136,6 +1160,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '406':
@@ -1147,6 +1174,9 @@ paths:
             application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
         '429':
           description: Client Error
           content:
@@ -1154,6 +1184,9 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
             application/vnd.trade.transaction+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
         '500':
@@ -1167,14 +1200,18 @@ paths:
             application/vnd.trade.transaction+json:
               schema:
                 "$ref": "#/components/schemas/ProblemDetails"
+            application/vnd.trade.transaction.hateoas+json:
+              schema:
+                "$ref": "#/components/schemas/ProblemDetails"
     put:
       tags:
       - Transactions
       summary: Update a transaction.
-      description: "Example: \\\r\nPUT /api/transactions/{id} \\\r\n{ \\\r\n    \"dateTime\":
-        \"2020-01-15T15:00:00\", \\\r\n    \"symbol\": \"CBA\" \\\r\n    \"type\":
-        \"SellToClose\", \\\r\n    \"quantity\": \"1.0\", \\\r\n    \"notional\":
-        \"12.50\", \\\r\n    \"tradePrice\": \"12.50\" \\\r\n}"
+      description: "Example:\r\n            \r\n    PUT /api/transactions/{id} \r\n
+        \   { \r\n        \"dateTime\": \"2020-01-15T15:00:00\", \r\n        \"symbol\":
+        \"CBA\",\r\n        \"type\": \"SellToClose\", \r\n        \"quantity\": \"1.0\",
+        \r\n        \"notional\": \"12.50\", \r\n        \"tradePrice\": \"12.50\"
+        \r\n    }"
       operationId: UpdateTransaction
       parameters:
       - name: id
@@ -1283,6 +1320,11 @@ paths:
       tags:
       - Transactions
       summary: Partially update a transaction.
+      description: "Example:\r\n            \r\n    PATCH /api/transactions/{id} \r\n
+        \   [ \r\n        { \r\n            \"op\": \"replace\", \r\n            \"path\":
+        \"/quantity\", \r\n            \"value\": \"25\" \r\n        }, \r\n        {
+        \r\n            \"op\": \"replace\", \r\n            \"path\": \"/notional\",\r\n
+        \           \"value\": \"75\" \r\n        } \r\n    ]"
       operationId: PatchTransaction
       parameters:
       - name: id
@@ -1391,7 +1433,7 @@ paths:
       tags:
       - Transactions
       summary: Delete a transaction.
-      description: "Example: \\\r\nDELETE /api/transactions/{id}"
+      description: "Example:\r\n            \r\n    DELETE /api/transactions/{id}"
       operationId: DeleteTransaction
       parameters:
       - name: id
@@ -1482,7 +1524,7 @@ paths:
       tags:
       - Transactions
       summary: Options for /api/transactions/{id} URI.
-      description: "Example: \\\r\nOPTIONS /api/transactions/{id}"
+      description: "Example:\r\n            \r\n    OPTIONS /api/transactions/{id}"
       operationId: OptionsForTransactionById
       parameters:
       - name: id
@@ -1560,7 +1602,7 @@ paths:
       tags:
       - Transactions
       summary: Get all transactions as a CSV file.
-      description: "Example \\\r\nGET /api/transactions/export"
+      description: "Example:\r\n            \r\n    GET /api/transactions/export"
       operationId: ExportTransactions
       responses:
         '200':
@@ -1631,7 +1673,7 @@ paths:
       tags:
       - Transactions
       summary: Options for /api/transactions/export URI.
-      description: "Example: \\\r\nOPTIONS /api/transactions/export"
+      description: "Example:\r\n            \r\n    OPTIONS /api/transactions/export"
       operationId: OptionsForExportTransactions
       responses:
         '204':
@@ -1782,22 +1824,6 @@ components:
     IContractResolver:
       type: object
       additionalProperties: false
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          nullable: true
-          readOnly: true
-        rel:
-          type: string
-          nullable: true
-          readOnly: true
-        method:
-          type: string
-          nullable: true
-          readOnly: true
-      additionalProperties: false
     OperationType:
       enum:
       - 0
@@ -1809,85 +1835,6 @@ components:
       - 6
       type: integer
       format: int32
-    PagedPositionsWithLinks:
-      type: object
-      properties:
-        metadata:
-          "$ref": "#/components/schemas/PaginationMetadata"
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/PositionForReturnWithLinks"
-          nullable: true
-        links:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Link"
-          nullable: true
-      additionalProperties: false
-    PaginationMetadata:
-      type: object
-      properties:
-        pageNumber:
-          type: integer
-          format: int32
-        pageSize:
-          type: integer
-          format: int32
-        pageCount:
-          type: integer
-          format: int32
-        totalRecordCount:
-          type: integer
-          format: int32
-      additionalProperties: false
-    PositionForReturn:
-      type: object
-      properties:
-        symbol:
-          type: string
-          nullable: true
-        exposure:
-          type: string
-          nullable: true
-        quantity:
-          type: number
-          format: double
-        averageCostBasis:
-          type: number
-          format: double
-        sourceRelations:
-          type: array
-          items:
-            "$ref": "#/components/schemas/SourceRelation"
-          nullable: true
-      additionalProperties: false
-    PositionForReturnWithLinks:
-      type: object
-      properties:
-        symbol:
-          type: string
-          nullable: true
-        exposure:
-          type: string
-          nullable: true
-        quantity:
-          type: number
-          format: double
-        averageCostBasis:
-          type: number
-          format: double
-        sourceRelations:
-          type: array
-          items:
-            "$ref": "#/components/schemas/SourceRelation"
-          nullable: true
-        links:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Link"
-          nullable: true
-      additionalProperties: false
     ProblemDetails:
       type: object
       properties:
@@ -1937,47 +1884,6 @@ components:
         userId:
           type: string
           nullable: true
-      additionalProperties: false
-    SourceRelation:
-      type: object
-      properties:
-        transactionId:
-          type: string
-          format: uuid
-        dateTime:
-          type: string
-          format: date-time
-        tradePrice:
-          type: number
-          format: double
-        quantity:
-          type: number
-          format: double
-      additionalProperties: false
-    TransactionForReturn:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        dateTime:
-          type: string
-          format: date-time
-        symbol:
-          type: string
-          nullable: true
-        type:
-          type: string
-          nullable: true
-        quantity:
-          type: number
-          format: double
-        notional:
-          type: number
-          format: double
-        tradePrice:
-          type: number
-          format: double
       additionalProperties: false
     UpdateTransactionCommand:
       type: object
